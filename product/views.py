@@ -70,3 +70,11 @@ def review_detail_view(request, id):
     data = serializers.ReviewDetailSerializer(review).data
     return Response(data=data,
                     status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def product_review_list_view(request):
+    products = Product.objects.all()
+    data = serializers.ProductReviewListSerializer(products, many=True).data
+
+    return Response(data=data)

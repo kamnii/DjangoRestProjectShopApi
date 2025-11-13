@@ -3,15 +3,24 @@ from .models import Category, Product, Review
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
+    
+
     class Meta:
         model = Category
-        fields = ['name']
+        fields = ['name', 'products_count']
+
 
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ['name']
+
+
+class ReviewListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ['id', 'text', 'stars']
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -26,13 +35,20 @@ class ProductDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class ReviewListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = ['text']
-
-
 class ReviewDetailSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Review
-        fields = '__all__'
+        fields = ['text', 'product', 'stars']
+        
+
+class ProductReviewListSerializer(serializers.ModelSerializer):
+    review = ReviewDetailSerializer(many=True, read_only=True)
+    average_stars_display = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Product
+        fields = ['title', 'category', 'price', 'review', 'average_stars_display']
+
+    def get_average_stars_display(self, product):
+        return product.average_stars_display
