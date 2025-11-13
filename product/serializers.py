@@ -3,11 +3,10 @@ from .models import Category, Product, Review
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
-    
 
     class Meta:
         model = Category
-        fields = ['name', 'products_count']
+        fields = ['id', 'name', 'products_count']
 
 
 
@@ -26,7 +25,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
 class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['title', 'category', 'price']
+        fields = ['id', 'title', 'category', 'price']
 
 
 class ProductDetailSerializer(serializers.ModelSerializer):
