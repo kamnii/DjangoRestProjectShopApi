@@ -15,7 +15,10 @@ def category_list_view(request):
                         status=status.HTTP_200_OK)
     
     elif request.method == 'POST':
-        name = request.data.get('name')
+        category_validation = serializers.CategoryValidatorSerializer(data=request.data)
+        category_validation.is_valid(raise_exception=True)
+
+        name = category_validation.validated_data.get('name')
         category = Category.objects.create(
             name=name
         )
@@ -38,7 +41,10 @@ def category_detail_view(request, id):
                         status=status.HTTP_200_OK)
     
     elif request.method == "PUT":
-        category.name = request.data.get('name')
+        category_validation = serializers.CategoryValidatorSerializer(data=request.data)
+        category_validation.is_valid(raise_exception=True)
+
+        category.name = category_validation.validated_data.get('name')
         category.save()
         return Response(data=serializers.CategoryDetailSerializer(category).data,
                         status=status.HTTP_201_CREATED)
@@ -61,10 +67,13 @@ def product_list_view(request):
                         status=status.HTTP_200_OK)
     
     elif request.method == "POST":
-        title = request.data.get('title')
-        description = request.data.get('description')
-        price = request.data.get('price')
-        category_id = request.data.get('category')
+        product_validation = serializers.ProductValidatorSerializer(data=request.data)
+        product_validation.is_valid(raise_exception=True)
+
+        title = product_validation.validated_data.get('title')
+        description = product_validation.validated_data.get('description')
+        price = product_validation.validated_data.get('price')
+        category_id = product_validation.validated_data.get('category')
 
         product = Product.objects.create(
             title=title,
@@ -90,10 +99,13 @@ def product_detail_view(request, id):
                         status=status.HTTP_200_OK)
     
     elif request.method == "PUT":
-        product.title = request.data.get('title')
-        product.description = request.data.get('description')
-        product.price = request.data.get('price')
-        product.category_id = request.data.get('category_id')
+        product_validation = serializers.ProductValidatorSerializer(data=request.data)
+        product_validation.is_valid(raise_exception=True)
+
+        product.title = product_validation.validated_data.get('title')
+        product.description = product_validation.validated_data.get('description')
+        product.price = product_validation.validated_data.get('price')
+        product.category_id = product_validation.validated_data.get('category_id')
         product.save()
         return Response(data=serializers.ProductDetailSerializer(product).data,
                         status=status.HTTP_201_CREATED)
@@ -115,9 +127,12 @@ def review_list_view(request):
                         status=status.HTTP_200_OK)
     
     elif request.method == "POST":
-        text = request.data.get('text')
-        product_id = request.data.get('product_id')
-        stars = request.data.get('stars')
+        reveiw_validation = serializers.ReviewValidatorSerializer(data=request.data)
+        reveiw_validation.is_valid(raise_exception=True)
+
+        text = reveiw_validation.validated_data.get('text')
+        product_id = reveiw_validation.validated_data.get('product_id')
+        stars = reveiw_validation.validated_data.get('stars')
 
         review = Review.objects.create(
             text=text,
@@ -142,9 +157,12 @@ def review_detail_view(request, id):
                         status=status.HTTP_200_OK)
 
     elif request.method == "PUT":
-        review.text = request.data.get('text')
-        review.product_id = request.data.get('product_id')
-        review.stars = request.data.get('stars')
+        reveiw_validation = serializers.ReviewValidatorSerializer(data=request.data)
+        reveiw_validation.is_valid(raise_exception=True)
+
+        review.text = reveiw_validation.validated_data.get('text')
+        review.product_id = reveiw_validation.validated_data.get('product_id')
+        review.stars = reveiw_validation.validated_data.get('stars')
         review.save()
         return Response(data=serializers.ReviewDetailSerializer(review).data,
                         status=status.HTTP_201_CREATED)
